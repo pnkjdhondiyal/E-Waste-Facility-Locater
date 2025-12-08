@@ -1,0 +1,71 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Info - ELocate</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="{% url 'home' %}" class="logo">🌍 ELocate</a>
+            <ul class="nav-links">
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'map' %}">Find Centers</a></li>
+                <li><a href="{% url 'calculator' %}">Calculator</a></li>
+                <li><a href="{% url 'info' %}">Info</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="info-section">
+        <div class="container">
+            <h2>Why E-Waste Recycling Matters</h2>
+            
+            <div class="info-content">
+                <div class="info-card">
+                    <h3>🌍 Environmental Impact</h3>
+                    <p>Electronic waste contains toxic materials like lead, mercury, and cadmium. When improperly disposed, these toxins leak into soil and water, harming ecosystems and human health.</p>
+                </div>
+
+                <div class="info-card">
+                    <h3>♻️ Resource Recovery</h3>
+                    <p>E-waste contains valuable materials like gold, silver, copper, and rare earth elements. Recycling recovers these resources, reducing the need for environmentally damaging mining.</p>
+                </div>
+
+                <div class="info-card">
+                    <h3>🌱 Carbon Footprint</h3>
+                    <p>Manufacturing new electronics requires significant energy. Recycling and reusing devices reduces carbon emissions by up to 80% compared to producing new ones.</p>
+                </div>
+
+                <div class="info-card">
+                    <h3>📊 Global E-Waste Crisis</h3>
+                    <p>Over 50 million tons of e-waste are generated annually worldwide, but only 20% is properly recycled. The rest ends up in landfills or is illegally exported.</p>
+                </div>
+
+                <div class="info-card">
+                    <h3>💡 What You Can Do</h3>
+                    <ul>
+                        <li>Use our map to find certified recycling centers</li>
+                        <li>Calculate your device's value before disposal</li>
+                        <li>Donate working devices to extend their life</li>
+                        <li>Remove personal data before recycling</li>
+                        <li>Spread awareness about e-waste recycling</li>
+                    </ul>
+                </div>
+
+                <div class="info-card">
+                    <h3>🔒 Data Security</h3>
+                    <p>Before recycling, always wipe your device completely. Use factory reset options and remove SIM cards, memory cards, and external storage.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 ELocate - Protecting the Environment, One Device at a Time</p>
+    </footer>
+</body>
+</html>

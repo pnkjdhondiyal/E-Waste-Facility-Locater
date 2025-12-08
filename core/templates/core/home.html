@@ -1,0 +1,64 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - ELocate</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="{% url 'home' %}" class="logo">🌍 ELocate</a>
+            <ul class="nav-links">
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'map' %}">Find Centers</a></li>
+                <li><a href="{% url 'calculator' %}">Calculator</a></li>
+                <li><a href="{% url 'info' %}">Info</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="container">
+            <h1>Welcome to ELocate</h1>
+            <p>Your E-Waste Recycling Companion</p>
+            <p class="hero-description">Discover nearby e-waste recycling centers, calculate your device's resale value, and see how much carbon emissions you can save by recycling responsibly. Together, let's protect our planet one device at a time.</p>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="container">
+            <a href="{% url 'map' %}" class="feature-card-link">
+                <div class="feature-card">
+                    <div class="icon">📍</div>
+                    <h3>Locate Centers</h3>
+                    <p>Find nearby e-waste recycling facilities on an interactive map</p>
+                    <span class="card-arrow">→</span>
+                </div>
+            </a>
+            <a href="{% url 'calculator' %}" class="feature-card-link">
+                <div class="feature-card">
+                    <div class="icon">💰</div>
+                    <h3>Device Value</h3>
+                    <p>Calculate the estimated resale value of your electronic device</p>
+                    <span class="card-arrow">→</span>
+                </div>
+            </a>
+            <a href="{% url 'calculator' %}" class="feature-card-link">
+                <div class="feature-card">
+                    <div class="icon">🌱</div>
+                    <h3>Carbon Savings</h3>
+                    <p>See how much CO2 emissions you save by recycling</p>
+                    <span class="card-arrow">→</span>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 ELocate - Protecting the Environment, One Device at a Time</p>
+    </footer>
+</body>
+</html>

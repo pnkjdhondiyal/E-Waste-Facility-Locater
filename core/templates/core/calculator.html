@@ -1,0 +1,120 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator - ELocate</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="{% url 'home' %}" class="logo">🌍 ELocate</a>
+            <ul class="nav-links">
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'map' %}">Find Centers</a></li>
+                <li><a href="{% url 'calculator' %}">Calculator</a></li>
+                <li><a href="{% url 'info' %}">Info</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="calculator-section">
+        <div class="container">
+            <h2>Device Impact Calculator</h2>
+            <div class="calculator-container">
+                <form id="calculatorForm">
+                    <div class="form-group">
+                        <label>Brand</label>
+                        <select name="brand" required>
+                            <option value="">Select Brand</option>
+                            <option value="Apple">Apple</option>
+                            <option value="Dell">Dell</option>
+                            <option value="HP">HP</option>
+                            <option value="Lenovo">Lenovo</option>
+                            <option value="Samsung">Samsung</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Processor</label>
+                        <select name="processor" required>
+                            <option value="">Select Processor</option>
+                            <option value="i3">Intel i3</option>
+                            <option value="i5">Intel i5</option>
+                            <option value="i7">Intel i7</option>
+                            <option value="i9">Intel i9</option>
+                            <option value="Ryzen3">AMD Ryzen 3</option>
+                            <option value="Ryzen5">AMD Ryzen 5</option>
+                            <option value="Ryzen7">AMD Ryzen 7</option>
+                            <option value="M1">Apple M1</option>
+                            <option value="M2">Apple M2</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>GPU</label>
+                        <select name="gpu" required>
+                            <option value="">Select GPU</option>
+                            <option value="Integrated">Integrated</option>
+                            <option value="GTX1650">GTX 1650</option>
+                            <option value="GTX1660">GTX 1660</option>
+                            <option value="RTX3050">RTX 3050</option>
+                            <option value="RTX3060">RTX 3060</option>
+                            <option value="RTX4060">RTX 4060</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Age (years)</label>
+                        <input type="number" name="age" min="0" max="20" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Weight (kg)</label>
+                        <input type="number" name="weight" step="0.1" min="0.1" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Material</label>
+                        <select name="material" required>
+                            <option value="">Select Material</option>
+                            <option value="Plastic">Plastic</option>
+                            <option value="Aluminum">Aluminum</option>
+                            <option value="Mixed">Mixed</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" id="calculateBtn">
+                        <span id="btnText">Calculate</span>
+                        <span id="btnLoader" style="display: none;">⏳ Calculating...</span>
+                    </button>
+                </form>
+
+                <div id="results" class="results" style="display: none;">
+                    <h3>🎉 Results</h3>
+                    <div class="result-item">
+                        <span class="result-label">💰 Estimated Resale Value:</span>
+                        <span class="result-value" id="estimatedValue">$0</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">🌱 Carbon Emissions Saved:</span>
+                        <span class="result-value" id="carbonSaved">0 kg CO2</span>
+                    </div>
+                    <p style="margin-top: 1rem; color: #27ae60; font-size: 0.9rem;">
+                        ♻️ By recycling instead of buying new, you're preventing manufacturing emissions and recovering valuable materials!
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 ELocate - Protecting the Environment, One Device at a Time</p>
+    </footer>
+
+    <script src="{% static 'js/calculator.js' %}"></script>
+</body>
+</html>

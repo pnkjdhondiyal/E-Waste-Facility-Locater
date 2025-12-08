@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}ELocate - E-Waste Locator{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="{% url 'home' %}" class="logo">🌍 ELocate</a>
+            <ul class="nav-links">
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'map' %}">Find Centers</a></li>
+                <li><a href="{% url 'calculator' %}">Calculator</a></li>
+                <li><a href="{% url 'info' %}">Info</a></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+    
+    <footer>
+        <p>&copy; 2024 ELocate - Protecting the Environment, One Device at a Time</p>
+    </footer>
+    
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,44 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Centers - ELocate</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="{% url 'home' %}" class="logo">🌍 ELocate</a>
+            <ul class="nav-links">
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'map' %}">Find Centers</a></li>
+                <li><a href="{% url 'calculator' %}">Calculator</a></li>
+                <li><a href="{% url 'info' %}">Info</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="map-section">
+        <div class="container">
+            <h2>E-Waste Recycling Centers Near You</h2>
+            <div class="map-container">
+                <div id="map"></div>
+                <div id="facilities-list" class="facilities-list">
+                    <h3>📍 Available Centers</h3>
+                    <div id="facilities-content">Loading...</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 ELocate - Protecting the Environment, One Device at a Time</p>
+    </footer>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="{% static 'js/map.js' %}"></script>
+</body>
+</html>
