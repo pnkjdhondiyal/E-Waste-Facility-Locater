@@ -1,7 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from .models import Facility, RecyclingLog
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
+from django.db.models import Sum
+from .models import Facility, RecyclingLog, UserProfile
 import json
 
 def home(request):
@@ -49,19 +53,28 @@ def calculator(request):
             estimated_value = (base * proc_mult + gpu_add) * depreciation
             
             # Carbon savings calculation (kg CO2)
-            # Manufacturing new device emissions + Material recycling benefit
             material_factor = {'Plastic': 2.5, 'Aluminum': 8.0, 'Mixed': 5.0}
-            manufacturing_co2 = 200  # Average kg CO2 for new device
+            manufacturing_co2 = 200
             recycling_benefit = weight * material_factor.get(material, 3.0)
             carbon_saved = manufacturing_co2 + recycling_benefit
             
-            # Save log
+            # Save log with user if authenticated
+            user = request.user if request.user.is_authenticated else None
             RecyclingLog.objects.create(
+                user=user,
                 device_brand=brand,
                 device_processor=processor,
                 estimated_value=estimated_value,
                 carbon_saved=carbon_saved
             )
+            
+            # Update user profile if logged in
+            if user:
+                profile, created = UserProfile.objects.get_or_create(user=user)
+                profile.total_devices_recycled += 1
+                profile.total_value_earned += estimated_value
+                profile.total_carbon_saved += carbon_saved
+                profile.save()
             
             return JsonResponse({
                 'estimated_value': round(estimated_value, 2),
@@ -74,3 +87,49 @@ def calculator(request):
 
 def info(request):
     return render(request, 'core/info.html')
+
+def register_view(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        
+        if User.objects.filter(username=username).exists():
+            return render(request, 'core/register.html', {'error': 'Username already exists'})
+        
+        user = User.objects.create_user(username=username, email=email, password=password)
+        UserProfile.objects.create(user=user)
+        login(request, user)
+        return redirect('dashboard')
+    
+    return render(request, 'core/register.html')
+
+def login_view(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+        
+        if user:
+            login(request, user)
+            return redirect('dashboard')
+        else:
+            return render(request, 'core/login.html', {'error': 'Invalid credentials'})
+    
+    return render(request, 'core/login.html')
+
+def logout_view(request):
+    logout(request)
+    return redirect('home')
+
+@login_required
+def dashboard(request):
+    profile, created = UserProfile.objects.get_or_create(user=request.user)
+    recent_logs = RecyclingLog.objects.filter(user=request.user).order_by('-created_at')[:5]
+    
+    context = {
+        'profile': profile,
+        'recent_logs': recent_logs,
+        'username': request.user.username
+    }
+    return render(request, 'core/dashboard.html', context)

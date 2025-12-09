@@ -1,0 +1,74 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - ELocate</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="{% url 'home' %}" class="logo">🌍 ELocate</a>
+            <ul class="nav-links">
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'map' %}">Find Centers</a></li>
+                <li><a href="{% url 'calculator' %}">Calculator</a></li>
+                <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+                <li><a href="{% url 'logout' %}">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="dashboard-section">
+        <div class="container">
+            <h2>Welcome, {{ username }}! 👋</h2>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">♻️</div>
+                    <h3>{{ profile.total_devices_recycled }}</h3>
+                    <p>Devices Recycled</p>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">💰</div>
+                    <h3>${{ profile.total_value_earned|floatformat:2 }}</h3>
+                    <p>Total Value Earned</p>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🌱</div>
+                    <h3>{{ profile.total_carbon_saved|floatformat:2 }} kg</h3>
+                    <p>CO2 Emissions Saved</p>
+                </div>
+            </div>
+
+            <div class="recent-activity">
+                <h3>Recent Activity</h3>
+                {% if recent_logs %}
+                <div class="activity-list">
+                    {% for log in recent_logs %}
+                    <div class="activity-item">
+                        <div class="activity-info">
+                            <h4>{{ log.device_brand }} - {{ log.device_processor }}</h4>
+                            <p>{{ log.created_at|date:"M d, Y - H:i" }}</p>
+                        </div>
+                        <div class="activity-stats">
+                            <span class="activity-value">💰 ${{ log.estimated_value|floatformat:2 }}</span>
+                            <span class="activity-carbon">🌱 {{ log.carbon_saved|floatformat:2 }} kg CO2</span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <p class="no-activity">No recycling activity yet. Start by using the <a href="{% url 'calculator' %}">calculator</a>!</p>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 ELocate - Protecting the Environment, One Device at a Time</p>
+    </footer>
+</body>
+</html>

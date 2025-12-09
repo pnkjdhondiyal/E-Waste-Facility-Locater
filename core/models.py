@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 class Facility(models.Model):
     name = models.CharField(max_length=200)
@@ -62,6 +63,7 @@ class Device(models.Model):
         return f"{self.brand} - {self.processor}"
 
 class RecyclingLog(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     device_brand = models.CharField(max_length=50)
     device_processor = models.CharField(max_length=50)
     estimated_value = models.FloatField()
@@ -70,3 +72,12 @@ class RecyclingLog(models.Model):
     
     def __str__(self):
         return f"{self.device_brand} - {self.created_at.strftime('%Y-%m-%d')}"
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    total_devices_recycled = models.IntegerField(default=0)
+    total_value_earned = models.FloatField(default=0)
+    total_carbon_saved = models.FloatField(default=0)
+    
+    def __str__(self):
+        return f"{self.user.username} Profile"

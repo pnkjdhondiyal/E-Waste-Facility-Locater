@@ -17,6 +17,13 @@
                 <li><a href="{% url 'map' %}">Find Centers</a></li>
                 <li><a href="{% url 'calculator' %}">Calculator</a></li>
                 <li><a href="{% url 'info' %}">Info</a></li>
+                {% if user.is_authenticated %}
+                <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+                <li><a href="{% url 'logout' %}">Logout</a></li>
+                {% else %}
+                <li><a href="{% url 'login' %}">Login</a></li>
+                <li><a href="{% url 'register' %}">Register</a></li>
+                {% endif %}
             </ul>
         </div>
     </nav>

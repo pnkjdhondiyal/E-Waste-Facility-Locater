@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Facility, Device, RecyclingLog
+from .models import Facility, Device, RecyclingLog, UserProfile
 
 @admin.register(Facility)
 class FacilityAdmin(admin.ModelAdmin):
@@ -13,5 +13,9 @@ class DeviceAdmin(admin.ModelAdmin):
 
 @admin.register(RecyclingLog)
 class RecyclingLogAdmin(admin.ModelAdmin):
-    list_display = ['device_brand', 'device_processor', 'estimated_value', 'carbon_saved', 'created_at']
-    list_filter = ['created_at']
+    list_display = ['user', 'device_brand', 'device_processor', 'estimated_value', 'carbon_saved', 'created_at']
+    list_filter = ['created_at', 'user']
+
+@admin.register(UserProfile)
+class UserProfileAdmin(admin.ModelAdmin):
+    list_display = ['user', 'total_devices_recycled', 'total_value_earned', 'total_carbon_saved']
