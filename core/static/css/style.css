@@ -353,6 +353,108 @@ body {
     outline: none;
     border-color: #667eea;
     box-shadow: 0 0 0 3px rgba(102,126,234,0.1);
+    transform: scale(1.02);
+}
+
+.form-group input:hover,
+.form-group select:hover {
+    border-color: #764ba2;
+}
+
+.form-group small {
+    display: block;
+    margin-top: 0.3rem;
+    font-size: 0.85rem;
+    animation: fadeIn 0.5s;
+}
+
+/* Tab buttons */
+.tab-btn {
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.tab-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.tab-btn:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+.tab-btn.active {
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(39,174,96,0.3);
+}
+
+/* Image preview animation */
+#imagePreview {
+    animation: zoomIn 0.5s;
+}
+
+@keyframes zoomIn {
+    from { opacity: 0; transform: scale(0.8); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+#previewImg {
+    transition: transform 0.3s;
+}
+
+#previewImg:hover {
+    transform: scale(1.05);
+}
+
+/* Extracted specs box */
+#extractedSpecs {
+    animation: slideInLeft 0.6s;
+}
+
+@keyframes slideInLeft {
+    from { opacity: 0; transform: translateX(-30px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+#extractedSpecs ul li {
+    animation: fadeInUp 0.5s;
+    animation-fill-mode: both;
+}
+
+#extractedSpecs ul li:nth-child(1) { animation-delay: 0.1s; }
+#extractedSpecs ul li:nth-child(2) { animation-delay: 0.2s; }
+#extractedSpecs ul li:nth-child(3) { animation-delay: 0.3s; }
+#extractedSpecs ul li:nth-child(4) { animation-delay: 0.4s; }
+#extractedSpecs ul li:nth-child(5) { animation-delay: 0.5s; }
+
+/* Button loading animation */
+#btnLoader, #uploadBtnLoader {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Pulse animation for important elements */
+.result-value {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
 }
 
 .results {

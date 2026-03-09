@@ -5,8 +5,12 @@ A Django web application that helps users find e-waste recycling centers, calcul
 ## Features
 
 - 📍 **Interactive Map**: Find nearby e-waste recycling centers using Leaflet.js
-- 💰 **Device Value Calculator**: Estimate resale value based on brand, processor, GPU, and age
+- 💰 **Device Value Calculator**: Estimate resale value based on brand, processor, GPU, condition, and age
+- 🎯 **Condition-Based Pricing**: Three pricing tiers (Pristine, Mint, Overused) with real market data
+- 🗄️ **Database-Driven Prices**: 20+ device configurations with accurate resale values
 - 🌱 **Carbon Savings**: Calculate CO2 emissions saved by recycling
+- 👤 **User Authentication**: Track personal recycling history and impact
+- 📊 **Dashboard**: View total devices recycled, value earned, and carbon saved
 - 📚 **Information Hub**: Learn about e-waste recycling importance
 
 ## Tech Stack
@@ -24,7 +28,7 @@ A Django web application that helps users find e-waste recycling centers, calcul
 pip install -r requirements.txt
 ```
 
-### 2. Run Migrations
+### 2. Run Migrations.......
 
 ```bash
 python manage.py makemigrations
@@ -37,7 +41,15 @@ python manage.py migrate
 python manage.py createsuperuser
 ```
 
-### 4. Add Sample Data (Optional)
+### 4. Populate Device Prices (INR)
+
+```bash
+python populate_device_prices_inr.py
+```
+
+This adds 20 real device configurations with Indian market pricing.
+
+### 5. Add Sample Facilities (Optional)
 
 You can add recycling facilities through the admin panel at `http://127.0.0.1:8000/admin/`
 
@@ -71,7 +83,7 @@ Facility.objects.create(
 )
 ```
 
-### 5. Run Development Server
+### 6. Run Development Server
 
 ```bash
 python manage.py runserver
@@ -113,13 +125,32 @@ elocate/
 ### Admin Panel
 - Access: `http://127.0.0.1:8000/admin/`
 - Add/manage recycling facilities
+- Manage device prices (NEW!)
 - View recycling logs
+
+### Device Condition Pricing (NEW!)
+
+The calculator now uses **database-driven pricing** with three condition tiers:
+
+1. **✨ Pristine** - Like new, no scratches (highest value)
+2. **⭐ Mint** - Minor wear, fully functional (standard value)
+3. **🔧 Overused** - Heavy wear, functional (lower value)
+
+**Example Prices:**
+- MacBook Air M1: Pristine ₹70,000 | Mint ₹62,000 | Overused ₹45,000
+- Dell XPS 13 i7: Pristine ₹75,000 | Mint ₹62,000 | Overused ₹45,000
+- HP Omen RTX3050: Pristine ₹78,000 | Mint ₹66,000 | Overused ₹49,000
 
 ### Calculator Logic
 
-**Resale Value Formula:**
+**Database-Driven Pricing:**
 ```
-Base Value (by brand) × Processor Multiplier + GPU Bonus × Depreciation Factor
+Base Price (from database by condition) × Age Depreciation (12% per year)
+```
+
+**Fallback Formula (if device not in database):**
+```
+Base Value × Processor Multiplier + GPU Bonus × Condition Multiplier × Age Depreciation
 ```
 
 **Carbon Savings Formula:**
@@ -129,6 +160,27 @@ Device Weight (kg) × Material Factor
 - Aluminum: 8.0 kg CO2/kg
 - Mixed: 5.0 kg CO2/kg
 ```
+
+## Adding Custom Device Prices
+
+Use `add_custom_devices.py` template to add more devices:
+
+```python
+custom_devices = [
+    {
+        'brand': 'Apple',
+        'model_name': 'MacBook Pro 16',
+        'processor': 'M1',
+        'gpu': 'Integrated',
+        'pristine_price': 1800,
+        'mint_price': 1550,
+        'overused_price': 1150,
+        'release_year': 2021
+    }
+]
+```
+
+See `CONDITION_PRICING_GUIDE.md` for detailed documentation.
 
 ## Future Enhancements
 

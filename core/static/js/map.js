@@ -51,18 +51,28 @@ fetch('/api/facilities/')
     .catch(error => console.error('Error loading facilities:', error));
 
 function displayFacilitiesList(facilities) {
-    const content = facilities.map(facility => {
-        let distance = '';
-        if (userLocation) {
+    // Sort facilities by distance if user location is available
+    let sortedFacilities = [...facilities];
+    
+    if (userLocation) {
+        sortedFacilities = sortedFacilities.map(facility => {
             const dist = calculateDistance(
                 userLocation.lat, userLocation.lng,
                 facility.latitude, facility.longitude
             );
-            distance = `<p><strong>📍 ${dist.toFixed(1)} km away</strong></p>`;
+            return { ...facility, distance: dist };
+        }).sort((a, b) => a.distance - b.distance);
+    }
+    
+    const content = sortedFacilities.map((facility, index) => {
+        let distance = '';
+        if (userLocation && facility.distance !== undefined) {
+            distance = `<p><strong>📍 ${facility.distance.toFixed(1)} km away</strong></p>`;
         }
         
         return `
-            <div class="facility-item">
+            <div class="facility-item" style="${index === 0 && userLocation ? 'border-left-color: #27ae60; background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);' : ''}">
+                ${index === 0 && userLocation ? '<span style="color: #27ae60; font-weight: bold; font-size: 0.85rem;">🎯 NEAREST</span>' : ''}
                 <h4>${facility.name}</h4>
                 <p>📍 ${facility.address}</p>
                 ${distance}
@@ -101,9 +111,11 @@ if (navigator.geolocation) {
         
         map.setView([userLocation.lat, userLocation.lng], 13);
         
-        // Reload facilities list with distances
+        // Reload facilities list with distances and sorting
         fetch('/api/facilities/')
             .then(response => response.json())
-            .then(facilities => displayFacilitiesList(facilities));
+            .then(facilities => {
+                displayFacilitiesList(facilities);
+            });
     });
 }

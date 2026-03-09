@@ -12,11 +12,14 @@ document.getElementById('calculatorForm').addEventListener('submit', async (e) =
     const formData = new FormData(e.target);
     const data = {
         brand: formData.get('brand'),
+        model: formData.get('model'),
         processor: formData.get('processor'),
         gpu: formData.get('gpu'),
-        age: formData.get('age'),
-        weight: formData.get('weight'),
-        material: formData.get('material')
+        ram: formData.get('ram'),
+        storage: formData.get('storage'),
+        condition: formData.get('condition'),
+        working_status: formData.get('working_status'),
+        age: formData.get('age')
     };
     
     try {
@@ -39,8 +42,9 @@ document.getElementById('calculatorForm').addEventListener('submit', async (e) =
             return;
         }
         
-        document.getElementById('estimatedValue').textContent = `$${result.estimated_value}`;
+        document.getElementById('estimatedValue').textContent = `₹${result.estimated_value}`;
         document.getElementById('carbonSaved').textContent = `${result.carbon_saved} kg CO2`;
+        document.getElementById('extractedSpecs').style.display = 'none'; // Hide for manual entry
         document.getElementById('results').style.display = 'block';
         
         document.getElementById('results').scrollIntoView({ behavior: 'smooth' });

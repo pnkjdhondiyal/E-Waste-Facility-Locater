@@ -14,7 +14,7 @@
             <ul class="nav-links">
                 <li><a href="{% url 'home' %}">Home</a></li>
                 <li><a href="{% url 'map' %}">Find Centers</a></li>
-                <li><a href="{% url 'calculator' %}">Calculator</a></li>
+                <li><a href="{% url 'calculator' %}">Sell</a></li>
                 <li><a href="{% url 'info' %}">Info</a></li>
                 {% if user.is_authenticated %}
                 <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
@@ -30,68 +30,83 @@
     <section class="calculator-section">
         <div class="container">
             <h2>Device Impact Calculator</h2>
+            <p style="text-align: center; color: #666; margin-bottom: 2rem;">
+                🔍 Don't know your device specs? <a href="#help-section" style="color: #27ae60; text-decoration: underline;">Click here for help</a>
+            </p>
+            
+            <!-- Tab Navigation -->
+            <div style="display: flex; justify-content: center; gap: 1rem; margin-bottom: 2rem;">
+                <button id="manualTab" class="tab-btn active" onclick="switchTab('manual')" style="padding: 0.8rem 2rem; border: 2px solid #27ae60; background: #27ae60; color: white; border-radius: 8px; cursor: pointer; font-size: 1rem;">
+                    ⌨️ Enter Manually
+                </button>
+                <button id="uploadTab" class="tab-btn" onclick="switchTab('upload')" style="padding: 0.8rem 2rem; border: 2px solid #27ae60; background: white; color: #27ae60; border-radius: 8px; cursor: pointer; font-size: 1rem;">
+                    📸 Upload Screenshot
+                </button>
+            </div>
+            
             <div class="calculator-container">
-                <form id="calculatorForm">
+                <!-- Manual Entry Form -->
+                <form id="calculatorForm" style="display: block;">
                     <div class="form-group">
                         <label>Brand</label>
-                        <select name="brand" required>
-                            <option value="">Select Brand</option>
-                            <option value="Apple">Apple</option>
-                            <option value="Dell">Dell</option>
-                            <option value="HP">HP</option>
-                            <option value="Lenovo">Lenovo</option>
-                            <option value="Samsung">Samsung</option>
-                            <option value="Other">Other</option>
+                        <input type="text" name="brand" placeholder="e.g., Apple, Dell, HP" required>
+                        <small style="color: #666;">💡 Check your laptop's sticker or box</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Model Name</label>
+                        <input type="text" name="model" placeholder="e.g., MacBook Air, XPS 13" required>
+                        <small style="color: #666;">💡 Usually printed on the device or in Settings</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Processor <span style="color: #999;">(Optional)</span></label>
+                        <input type="text" name="processor" placeholder="e.g., i5, i7, M1, Ryzen5">
+                        <small style="color: #666;">💡 Windows: Right-click 'This PC' → Properties | Mac: Apple Menu → About This Mac</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label>GPU <span style="color: #999;">(Optional)</span></label>
+                        <input type="text" name="gpu" placeholder="e.g., Integrated, RTX3050">
+                        <small style="color: #666;">💡 Check in Device Manager (Windows) or System Report (Mac)</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label>RAM (GB) <span style="color: #999;">(Optional)</span></label>
+                        <input type="number" name="ram" placeholder="e.g., 8, 16" min="2" max="128">
+                        <small style="color: #666;">💡 Same location as Processor info</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Storage (GB) <span style="color: #999;">(Optional)</span></label>
+                        <input type="number" name="storage" placeholder="e.g., 256, 512" min="64" max="4096">
+                        <small style="color: #666;">💡 Check in File Explorer (Windows) or About This Mac (Mac)</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Device Condition</label>
+                        <select name="condition" required>
+                            <option value="">Select Condition</option>
+                            <option value="pristine">✨ Pristine - Like new, no scratches</option>
+                            <option value="mint" selected>⭐ Mint - Minor wear, fully functional</option>
+                            <option value="overused">🔧 Overused - Heavy wear, functional</option>
                         </select>
                     </div>
 
                     <div class="form-group">
-                        <label>Processor</label>
-                        <select name="processor" required>
-                            <option value="">Select Processor</option>
-                            <option value="i3">Intel i3</option>
-                            <option value="i5">Intel i5</option>
-                            <option value="i7">Intel i7</option>
-                            <option value="i9">Intel i9</option>
-                            <option value="Ryzen3">AMD Ryzen 3</option>
-                            <option value="Ryzen5">AMD Ryzen 5</option>
-                            <option value="Ryzen7">AMD Ryzen 7</option>
-                            <option value="M1">Apple M1</option>
-                            <option value="M2">Apple M2</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label>GPU</label>
-                        <select name="gpu" required>
-                            <option value="">Select GPU</option>
-                            <option value="Integrated">Integrated</option>
-                            <option value="GTX1650">GTX 1650</option>
-                            <option value="GTX1660">GTX 1660</option>
-                            <option value="RTX3050">RTX 3050</option>
-                            <option value="RTX3060">RTX 3060</option>
-                            <option value="RTX4060">RTX 4060</option>
+                        <label>Working Status</label>
+                        <select name="working_status" required>
+                            <option value="">Select Status</option>
+                            <option value="fully_working" selected>✅ Fully Working - All features functional</option>
+                            <option value="minor_issues">⚠️ Minor Issues - Small problems (battery, keys)</option>
+                            <option value="major_issues">❌ Major Issues - Significant problems</option>
+                            <option value="not_working">🔴 Not Working - For parts only</option>
                         </select>
                     </div>
 
                     <div class="form-group">
                         <label>Age (years)</label>
-                        <input type="number" name="age" min="0" max="20" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Weight (kg)</label>
-                        <input type="number" name="weight" step="0.1" min="0.1" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Material</label>
-                        <select name="material" required>
-                            <option value="">Select Material</option>
-                            <option value="Plastic">Plastic</option>
-                            <option value="Aluminum">Aluminum</option>
-                            <option value="Mixed">Mixed</option>
-                        </select>
+                        <input type="number" name="age" placeholder="e.g., 2" min="0" max="20" required>
                     </div>
 
                     <button type="submit" class="btn btn-primary" id="calculateBtn">
@@ -100,11 +115,73 @@
                     </button>
                 </form>
 
+                <!-- Upload Screenshot Form -->
+                <form id="uploadForm" style="display: none;">
+                    <div style="text-align: center; padding: 2rem; background: #f8f9fa; border-radius: 8px; border: 2px dashed #27ae60;">
+                        <h3 style="margin-bottom: 1rem;">📸 Upload Device Screenshot</h3>
+                        <p style="color: #666; margin-bottom: 1.5rem;">
+                            Take a screenshot of your device's "About" or "System Information" page
+                        </p>
+                        
+                        <input type="file" id="imageInput" accept="image/*" style="display: none;" onchange="previewImage(event)">
+                        <label for="imageInput" style="display: inline-block; padding: 1rem 2rem; background: #27ae60; color: white; border-radius: 8px; cursor: pointer; font-size: 1rem;">
+                            📁 Choose Image
+                        </label>
+                        
+                        <div id="imagePreview" style="margin-top: 1.5rem; display: none;">
+                            <img id="previewImg" style="max-width: 100%; max-height: 300px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                            <p id="fileName" style="margin-top: 0.5rem; color: #666;"></p>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group" style="margin-top: 1.5rem;">
+                        <label>Device Condition</label>
+                        <select name="condition" id="uploadCondition" required>
+                            <option value="">Select Condition</option>
+                            <option value="pristine">✨ Pristine - Like new, no scratches</option>
+                            <option value="mint" selected>⭐ Mint - Minor wear, fully functional</option>
+                            <option value="overused">🔧 Overused - Heavy wear, functional</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Working Status</label>
+                        <select name="working_status" id="uploadWorkingStatus" required>
+                            <option value="">Select Status</option>
+                            <option value="fully_working" selected>✅ Fully Working</option>
+                            <option value="minor_issues">⚠️ Minor Issues</option>
+                            <option value="major_issues">❌ Major Issues</option>
+                            <option value="not_working">🔴 Not Working</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Age (years)</label>
+                        <input type="number" name="age" id="uploadAge" placeholder="e.g., 2" min="0" max="20" required>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary" id="uploadBtn">
+                        <span id="uploadBtnText">🔍 Analyze & Calculate</span>
+                        <span id="uploadBtnLoader" style="display: none;">⏳ Analyzing...</span>
+                    </button>
+                </form>
+
                 <div id="results" class="results" style="display: none;">
                     <h3>🎉 Results</h3>
+                    
+                    <!-- Extracted Specs Display -->
+                    <div id="extractedSpecs" style="display: none; background: #e8f5e9; padding: 1rem; border-radius: 8px; margin-bottom: 1rem; border-left: 4px solid #27ae60;">
+                        <h4 style="margin: 0 0 0.5rem 0; color: #27ae60;">📋 Detected Specifications:</h4>
+                        <div id="specsContent" style="font-size: 0.95rem; line-height: 1.6;"></div>
+                        <details style="margin-top: 0.5rem;">
+                            <summary style="cursor: pointer; color: #666; font-size: 0.85rem;">🔍 View Extracted Text (Debug)</summary>
+                            <pre id="extractedText" style="background: #f5f5f5; padding: 0.5rem; border-radius: 4px; font-size: 0.75rem; overflow-x: auto; margin-top: 0.5rem;"></pre>
+                        </details>
+                    </div>
+                    
                     <div class="result-item">
                         <span class="result-label">💰 Estimated Resale Value:</span>
-                        <span class="result-value" id="estimatedValue">$0</span>
+                        <span class="result-value" id="estimatedValue">₹0</span>
                     </div>
                     <div class="result-item">
                         <span class="result-label">🌱 Carbon Emissions Saved:</span>
@@ -118,10 +195,192 @@
         </div>
     </section>
 
+    <section id="help-section" style="background: #f8f9fa; padding: 3rem 0;">
+        <div class="container">
+            <h2 style="text-align: center; margin-bottom: 2rem;">📚 How to Find Your Device Specifications</h2>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+                <div style="background: white; padding: 1.5rem; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                    <h3>💻 Windows Users</h3>
+                    <ol style="line-height: 1.8;">
+                        <li>Right-click on <strong>This PC</strong> or <strong>My Computer</strong></li>
+                        <li>Click <strong>Properties</strong></li>
+                        <li>You'll see: Processor, RAM, Windows version</li>
+                        <li>For GPU: Open <strong>Device Manager</strong> → <strong>Display adapters</strong></li>
+                    </ol>
+                </div>
+                
+                <div style="background: white; padding: 1.5rem; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                    <h3>🍎 Mac Users</h3>
+                    <ol style="line-height: 1.8;">
+                        <li>Click <strong>Apple Menu</strong> () in top-left</li>
+                        <li>Select <strong>About This Mac</strong></li>
+                        <li>You'll see: Processor, Memory (RAM), Storage</li>
+                        <li>Click <strong>System Report</strong> for more details</li>
+                    </ol>
+                </div>
+                
+                <div style="background: white; padding: 1.5rem; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                    <h3>📱 Quick Tips</h3>
+                    <ul style="line-height: 1.8;">
+                        <li><strong>Brand & Model:</strong> Check laptop bottom sticker or original box</li>
+                        <li><strong>Don't know specs?</strong> Just enter Brand, Model, and Condition - we'll estimate!</li>
+                        <li><strong>Processor examples:</strong> i5, i7, M1, Ryzen5</li>
+                        <li><strong>GPU examples:</strong> Integrated, RTX3050, GTX1650</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 2rem; padding: 1.5rem; background: #e8f5e9; border-radius: 8px;">
+                <p style="font-size: 1.1rem; color: #2e7d32; margin: 0;">
+                    ✨ <strong>Pro Tip:</strong> Only Brand, Model, Condition, and Age are required! Other specs help us give a more accurate estimate.
+                </p>
+            </div>
+        </div>
+    </section>
+
     <footer>
         <p>&copy; 2024 ELocate - Protecting the Environment, One Device at a Time</p>
     </footer>
 
     <script src="{% static 'js/calculator.js' %}"></script>
+    <script>
+        function switchTab(tab) {
+            const manualForm = document.getElementById('calculatorForm');
+            const uploadForm = document.getElementById('uploadForm');
+            const manualTab = document.getElementById('manualTab');
+            const uploadTab = document.getElementById('uploadTab');
+            
+            if (tab === 'manual') {
+                manualForm.style.display = 'block';
+                uploadForm.style.display = 'none';
+                manualTab.style.background = '#27ae60';
+                manualTab.style.color = 'white';
+                uploadTab.style.background = 'white';
+                uploadTab.style.color = '#27ae60';
+            } else {
+                manualForm.style.display = 'none';
+                uploadForm.style.display = 'block';
+                uploadTab.style.background = '#27ae60';
+                uploadTab.style.color = 'white';
+                manualTab.style.background = 'white';
+                manualTab.style.color = '#27ae60';
+            }
+        }
+        
+        function previewImage(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('previewImg').src = e.target.result;
+                    document.getElementById('imagePreview').style.display = 'block';
+                    document.getElementById('fileName').textContent = file.name;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+        
+        document.getElementById('uploadForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const imageInput = document.getElementById('imageInput');
+            if (!imageInput.files[0]) {
+                alert('Please select an image first!');
+                return;
+            }
+            
+            const btn = document.getElementById('uploadBtn');
+            const btnText = document.getElementById('uploadBtnText');
+            const btnLoader = document.getElementById('uploadBtnLoader');
+            
+            btnText.style.display = 'none';
+            btnLoader.style.display = 'inline';
+            btn.disabled = true;
+            
+            const formData = new FormData();
+            formData.append('image', imageInput.files[0]);
+            formData.append('condition', document.getElementById('uploadCondition').value);
+            formData.append('working_status', document.getElementById('uploadWorkingStatus').value);
+            formData.append('age', document.getElementById('uploadAge').value);
+            
+            try {
+                const response = await fetch('/calculator/upload/', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Server error');
+                }
+                
+                const result = await response.json();
+                
+                if (result.error) {
+                    alert('Error: ' + result.error);
+                    return;
+                }
+                
+                document.getElementById('estimatedValue').textContent = `₹${result.estimated_value}`;
+                document.getElementById('carbonSaved').textContent = `${result.carbon_saved} kg CO2`;
+                
+                // Show extracted specs in a nice format
+                if (result.extracted_specs && Object.keys(result.extracted_specs).length > 0) {
+                    let specsHTML = '<ul style="margin: 0; padding-left: 1.5rem;">';
+                    let hasAnySpec = false;
+                    
+                    if (result.extracted_specs.brand) {
+                        specsHTML += `<li><strong>Brand:</strong> ${result.extracted_specs.brand}</li>`;
+                        hasAnySpec = true;
+                    }
+                    if (result.extracted_specs.processor) {
+                        specsHTML += `<li><strong>Processor:</strong> ${result.extracted_specs.processor}</li>`;
+                        hasAnySpec = true;
+                    }
+                    if (result.extracted_specs.ram) {
+                        specsHTML += `<li><strong>RAM:</strong> ${result.extracted_specs.ram} GB</li>`;
+                        hasAnySpec = true;
+                    } else {
+                        specsHTML += `<li><strong>RAM:</strong> <span style="color: #999;">Not detected (using default: 8 GB)</span></li>`;
+                    }
+                    if (result.extracted_specs.gpu) {
+                        specsHTML += `<li><strong>GPU:</strong> ${result.extracted_specs.gpu}</li>`;
+                        hasAnySpec = true;
+                    }
+                    if (result.extracted_specs.storage) {
+                        specsHTML += `<li><strong>Storage:</strong> ${result.extracted_specs.storage} GB</li>`;
+                        hasAnySpec = true;
+                    } else {
+                        specsHTML += `<li><strong>Storage:</strong> <span style="color: #999;">Not detected (using default: 256 GB)</span></li>`;
+                    }
+                    
+                    specsHTML += '</ul>';
+                    
+                    if (hasAnySpec) {
+                        document.getElementById('specsContent').innerHTML = specsHTML;
+                        
+                        // Show extracted text for debugging
+                        if (result.extracted_text) {
+                            document.getElementById('extractedText').textContent = result.extracted_text;
+                        }
+                        
+                        document.getElementById('extractedSpecs').style.display = 'block';
+                    }
+                } else {
+                    document.getElementById('extractedSpecs').style.display = 'none';
+                }
+                
+                document.getElementById('results').style.display = 'block';
+                document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error analyzing image. Please try manual entry or check your image.');
+            } finally {
+                btnText.style.display = 'inline';
+                btnLoader.style.display = 'none';
+                btn.disabled = false;
+            }
+        });
+    </script>
 </body>
 </html>

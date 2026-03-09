@@ -5,6 +5,7 @@ urlpatterns = [
     path('', views.home, name='home'),
     path('map/', views.map_view, name='map'),
     path('calculator/', views.calculator, name='calculator'),
+    path('calculator/upload/', views.calculator_upload, name='calculator_upload'),
     path('info/', views.info, name='info'),
     path('api/facilities/', views.get_facilities_json, name='facilities_json'),
     path('register/', views.register_view, name='register'),

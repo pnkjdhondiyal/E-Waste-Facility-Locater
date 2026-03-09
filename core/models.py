@@ -62,10 +62,33 @@ class Device(models.Model):
     def __str__(self):
         return f"{self.brand} - {self.processor}"
 
+class DevicePrice(models.Model):
+    brand = models.CharField(max_length=50)
+    model_name = models.CharField(max_length=100)
+    processor = models.CharField(max_length=50)
+    gpu = models.CharField(max_length=50)
+    ram_gb = models.IntegerField(default=8)
+    storage_gb = models.IntegerField(default=256)
+    
+    # Base prices for different conditions (in INR)
+    pristine_price = models.FloatField(help_text="Like new, no scratches (INR)")
+    mint_price = models.FloatField(help_text="Minor wear, fully functional (INR)")
+    overused_price = models.FloatField(help_text="Heavy wear, functional (INR)")
+    
+    release_year = models.IntegerField()
+    
+    class Meta:
+        verbose_name_plural = "Device Prices"
+        ordering = ['-release_year', 'brand']
+    
+    def __str__(self):
+        return f"{self.brand} {self.model_name} - {self.processor}"
+
 class RecyclingLog(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     device_brand = models.CharField(max_length=50)
     device_processor = models.CharField(max_length=50)
+    device_condition = models.CharField(max_length=20, default='mint')
     estimated_value = models.FloatField()
     carbon_saved = models.FloatField()
     created_at = models.DateTimeField(auto_now_add=True)
