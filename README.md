@@ -1,195 +1,233 @@
-# 🌍 ELocate - E-Waste Locator & Device Impact Calculator
+# 🌍 ELocate - E-Waste Facility Locator & Device Resale Platform
 
-A Django web application that helps users find e-waste recycling centers, calculate device resale value, and estimate carbon emission savings.
+A comprehensive Django web application that helps users find certified e-waste recycling centers, calculate device resale value with AI-powered screenshot analysis, and track environmental impact.
 
-## Features
+## ✨ Features
 
-- 📍 **Interactive Map**: Find nearby e-waste recycling centers using Leaflet.js
-- 💰 **Device Value Calculator**: Estimate resale value based on brand, processor, GPU, condition, and age
-- 🎯 **Condition-Based Pricing**: Three pricing tiers (Pristine, Mint, Overused) with real market data
-- 🗄️ **Database-Driven Prices**: 20+ device configurations with accurate resale values
-- 🌱 **Carbon Savings**: Calculate CO2 emissions saved by recycling
-- 👤 **User Authentication**: Track personal recycling history and impact
-- 📊 **Dashboard**: View total devices recycled, value earned, and carbon saved
-- 📚 **Information Hub**: Learn about e-waste recycling importance
+### 🗺️ Interactive Map
+- Find 10+ certified e-waste recycling centers across India
+- Real-time distance calculation from user location
+- Auto-sorted facility list (nearest first)
+- Interactive markers with facility details
+- Powered by Leaflet.js
 
-## Tech Stack
+### 💰 Smart Device Calculator
+- **Manual Entry**: Input device specifications manually
+- **📸 Screenshot Upload**: AI-powered OCR extracts specs from screenshots
+- **Condition-Based Pricing**: Pristine, Mint, Overused tiers
+- **Working Status**: Fully working, Minor issues, Major issues, Not working
+- **Database-Driven**: 20+ device configurations with real INR prices
+- **Age Depreciation**: Automatic value calculation based on device age
 
-- **Backend**: Django (Python)
-- **Frontend**: HTML, CSS, JavaScript
-- **Map**: Leaflet.js
+### 🔐 User Authentication
+- Secure login/registration system
+- Protected routes (login required for map & calculator)
+- Personal dashboard with statistics
+
+### 📊 User Dashboard
+- Total devices recycled
+- Total value earned (₹)
+- CO2 emissions saved (kg)
+- Recent recycling activity history
+
+### 🌱 Environmental Impact
+- Carbon footprint calculation
+- CO2 savings tracking
+- Educational information hub
+
+## 🛠️ Tech Stack
+
+- **Backend**: Django 4.2+ (Python)
+- **Frontend**: HTML5, CSS3, JavaScript (ES6+)
 - **Database**: SQLite
+- **Maps**: Leaflet.js with OpenStreetMap
+- **OCR**: Tesseract OCR + Pillow
+- **Authentication**: Django Auth System
 
-## Setup Instructions
+## 📦 Installation
 
-### 1. Install Dependencies
+### Prerequisites
+- Python 3.8+
+- Tesseract OCR (for screenshot feature)
 
+### 1. Clone Repository
+```bash
+git clone <repository-url>
+cd E-Waste-Facility-Locater
+```
+
+### 2. Install Python Dependencies
 ```bash
 pip install -r requirements.txt
 ```
 
-### 2. Run Migrations.......
+### 3. Install Tesseract OCR
 
+**Windows:**
+- Download: https://github.com/UB-Mannheim/tesseract/wiki
+- Install to: `C:\Program Files\Tesseract-OCR`
+- Update path in `elocate/settings.py` if needed
+
+**Mac:**
+```bash
+brew install tesseract
+```
+
+**Linux:**
+```bash
+sudo apt-get install tesseract-ocr
+```
+
+### 4. Database Setup
 ```bash
 python manage.py makemigrations
 python manage.py migrate
 ```
 
-### 3. Create Superuser (Admin)
-
+### 5. Create Admin User
 ```bash
 python manage.py createsuperuser
 ```
 
-### 4. Populate Device Prices (INR)
-
+### 6. Populate Device Prices (INR)
 ```bash
 python populate_device_prices_inr.py
 ```
 
-This adds 20 real device configurations with Indian market pricing.
-
-### 5. Add Sample Facilities (Optional)
-
-You can add recycling facilities through the admin panel at `http://127.0.0.1:8000/admin/`
-
-Or use Django shell:
-
+### 7. Add E-Waste Facilities
 ```bash
-python manage.py shell
+python update_facilities.py
 ```
 
-Then run:
+This adds 10 certified e-waste centers across India.
 
-```python
-from core.models import Facility
-
-Facility.objects.create(
-    name="Green E-Waste Recycling Center",
-    address="123 Main Street, Delhi",
-    latitude=28.6139,
-    longitude=77.2090,
-    phone="+91-1234567890",
-    email="info@greenewaste.com"
-)
-
-Facility.objects.create(
-    name="EcoTech Recyclers",
-    address="456 Park Avenue, Delhi",
-    latitude=28.5355,
-    longitude=77.3910,
-    phone="+91-9876543210",
-    email="contact@ecotech.com"
-)
-```
-
-### 6. Run Development Server
-
+### 8. Run Development Server
 ```bash
 python manage.py runserver
 ```
 
-Visit `http://127.0.0.1:8000/` in your browser.
+Visit: `http://127.0.0.1:8000/`
 
-## Project Structure
+## 🚀 Usage
+
+### For Users
+
+1. **Register/Login**: Create account to access features
+2. **Find Centers**: View map with nearest recycling centers
+3. **Calculate Value**: 
+   - Enter device specs manually, OR
+   - Upload screenshot of device info
+4. **Track Impact**: View dashboard with recycling statistics
+
+### For Admins
+
+- Admin Panel: `http://127.0.0.1:8000/admin/`
+- Manage facilities, device prices, users
+- View all recycling logs
+
+## 💡 Key Features Explained
+
+### Screenshot Upload (OCR)
+Users can upload screenshots of their device's "About" page:
+- **Windows**: Settings → System → About
+- **Mac**: Apple Menu → About This Mac
+
+AI extracts:
+- Brand (Apple, Dell, HP, Lenovo, etc.)
+- Processor (i3/i5/i7, Ryzen, M1/M2)
+- RAM (4GB-128GB)
+- GPU (Integrated, RTX, GTX series)
+- Storage (256GB-2TB)
+
+### Pricing System
+
+**Database Prices (20+ devices):**
+- MacBook Air M1: ₹70,000 (Pristine) → ₹62,000 (Mint) → ₹45,000 (Overused)
+- Dell XPS 13 i7: ₹75,000 → ₹62,000 → ₹45,000
+- HP Omen RTX3050: ₹78,000 → ₹66,000 → ₹49,000
+
+**Working Status Multipliers:**
+- Fully Working: 100%
+- Minor Issues: 85%
+- Major Issues: 60%
+- Not Working: 30%
+
+**Formula:**
+```
+Final Price = Base Price × Age Depreciation × Working Status
+```
+
+### Certified E-Waste Centers
+
+10 real facilities included:
+- Attero Recycling (Roorkee, Uttarakhand)
+- E-Parisaraa (Bangalore, Karnataka)
+- Eco Recycling (Mumbai, Maharashtra)
+- Greenscape Eco (Delhi)
+- Techchef E-Waste (New Delhi)
+- And 5 more across India
+
+## 📁 Project Structure
 
 ```
-elocate/
-├── core/                      # Main Django app
-│   ├── models.py             # Database models
-│   ├── views.py              # View functions
-│   ├── urls.py               # URL routing
-│   ├── admin.py              # Admin configuration
-│   ├── static/               # Static files
-│   │   ├── css/
-│   │   │   └── style.css
+E-Waste-Facility-Locater/
+├── core/                          # Main Django app
+│   ├── models.py                 # Database models
+│   ├── views.py                  # View logic + OCR
+│   ├── urls.py                   # URL routing
+│   ├── admin.py                  # Admin config
+│   ├── static/
+│   │   ├── css/style.css        # Styling
 │   │   └── js/
-│   │       ├── calculator.js
-│   │       └── map.js
-│   └── templates/            # HTML templates
-│       └── core/
-│           ├── home.html
-│           ├── map.html
-│           ├── calculator.html
-│           └── info.html
-├── elocate/                  # Django project settings
+│   │       ├── calculator.js    # Calculator logic
+│   │       └── map.js           # Map + sorting
+│   └── templates/core/
+│       ├── home.html
+│       ├── map.html
+│       ├── calculator.html
+│       ├── dashboard.html
+│       ├── login.html
+│       └── register.html
+├── elocate/                      # Project settings
 │   ├── settings.py
-│   ├── urls.py
-│   └── wsgi.py
+│   └── urls.py
+├── db.sqlite3                    # Database
 ├── manage.py
-└── requirements.txt
+├── requirements.txt
+├── populate_device_prices_inr.py
+└── update_facilities.py
 ```
 
-## Usage
+## 🔒 Security Features
 
-### Admin Panel
-- Access: `http://127.0.0.1:8000/admin/`
-- Add/manage recycling facilities
-- Manage device prices (NEW!)
-- View recycling logs
+- Login required for map and calculator
+- CSRF protection enabled
+- Password hashing (Django default)
+- Secure session management
 
-### Device Condition Pricing (NEW!)
+## 🌟 Highlights
 
-The calculator now uses **database-driven pricing** with three condition tiers:
+✅ Real certified e-waste centers
+✅ AI-powered screenshot analysis
+✅ INR pricing (Indian market)
+✅ Distance-based sorting
+✅ User dashboard with stats
+✅ Responsive design
+✅ Interactive animations
+✅ Environmental impact tracking
 
-1. **✨ Pristine** - Like new, no scratches (highest value)
-2. **⭐ Mint** - Minor wear, fully functional (standard value)
-3. **🔧 Overused** - Heavy wear, functional (lower value)
+## 📝 License
 
-**Example Prices:**
-- MacBook Air M1: Pristine ₹70,000 | Mint ₹62,000 | Overused ₹45,000
-- Dell XPS 13 i7: Pristine ₹75,000 | Mint ₹62,000 | Overused ₹45,000
-- HP Omen RTX3050: Pristine ₹78,000 | Mint ₹66,000 | Overused ₹49,000
+MIT License - Free for educational and commercial use.
 
-### Calculator Logic
+## 🤝 Contributing
 
-**Database-Driven Pricing:**
-```
-Base Price (from database by condition) × Age Depreciation (12% per year)
-```
+Contributions welcome! Please open an issue or submit a pull request.
 
-**Fallback Formula (if device not in database):**
-```
-Base Value × Processor Multiplier + GPU Bonus × Condition Multiplier × Age Depreciation
-```
+## 📧 Support
 
-**Carbon Savings Formula:**
-```
-Device Weight (kg) × Material Factor
-- Plastic: 2.5 kg CO2/kg
-- Aluminum: 8.0 kg CO2/kg
-- Mixed: 5.0 kg CO2/kg
-```
+For issues or questions, please open a GitHub issue.
 
-## Adding Custom Device Prices
+---
 
-Use `add_custom_devices.py` template to add more devices:
-
-```python
-custom_devices = [
-    {
-        'brand': 'Apple',
-        'model_name': 'MacBook Pro 16',
-        'processor': 'M1',
-        'gpu': 'Integrated',
-        'pristine_price': 1800,
-        'mint_price': 1550,
-        'overused_price': 1150,
-        'release_year': 2021
-    }
-]
-```
-
-See `CONDITION_PRICING_GUIDE.md` for detailed documentation.
-
-## Future Enhancements
-
-- User authentication
-- Booking system for pickups
-- Mobile app version
-- Real-time facility availability
-- Community forum
-
-## License
-
-MIT License - Feel free to use for educational purposes.
+**Made with 💚 for a sustainable future**
